@@ -34,11 +34,11 @@ class DataTransformer:
             
             num_pipeline = Pipeline(
                 steps=[
-                    ('imputer', SimpleImputer(strategy='median')),
-                    ('scaler', StandardScaler())
+                    ('imputer', SimpleImputer(strategy='median')),# Handle missing values
+                    ('scaler', StandardScaler()) # Standardize the data
                 ]
             )
-            logging.info('numerical columns standard scaling completed')
+            logging.info('numerical columns standard scaling initiated')
 
             cat_pipeline = Pipeline(
                 steps=[
@@ -82,7 +82,7 @@ class DataTransformer:
 
                 logging.info('data transformation on train and test data started')
                 input_feature_train_df_arr = preprocessing_obj.fit_transform(input_feature_train_df)
-                input_feature_test_df_arr = preprocessing_obj.fit_transform(input_feature_test_df)
+                input_feature_test_df_arr = preprocessing_obj.transform(input_feature_test_df)
 
                 train_arr = np.c_[
                      input_feature_train_df_arr,np.array(target_feature_train_df)

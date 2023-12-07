@@ -14,13 +14,13 @@ from src.components.model_trainer import ModelTrainerConfig
 from src.components.model_trainer import ModelTrainer
 
 
-@dataclass
-class DataIngestionConfig:
+@dataclass # Dataclass decorator, we do not need to define __init__ method
+class DataIngestionConfig:# another reason to use dataclass is that we only define variables here and not methods
     train_data_path: str=os.path.join('artifacts', "train.csv")
     test_data_path: str=os.path.join('artifacts', "test.csv")
     raw_data_path: str=os.path.join('artifacts', "data.csv")
 
-class DataIngestion:
+class DataIngestion:# Here we do not use dataclass decorator because we need to define __init__ method
     def __init__(self):
         self.ingestion_config = DataIngestionConfig()
     
@@ -28,7 +28,7 @@ class DataIngestion:
         logging.info("Initiating data ingestion")
         try:
             df = pd.read_csv('notebook/data/stud.csv')
-            logging.info("Data ingestion successful")
+            logging.info("Data ingestion initiated")
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
             df.to_csv(self.ingestion_config.raw_data_path, index=False,header=True)
@@ -54,8 +54,10 @@ if __name__ == "__main__":
     obj = DataIngestion()
     train_data,test_data = obj.initiate_data_ingestion()
 
+    # Data Transformation from src/components/data_transformation.py
     data_transformation = DataTransformer()
     train_arr,test_arr,_ = data_transformation.initiate_data_transformation(train_data,test_data)
 
+    # Model Training from src/components/model_trainer.py
     model_trainer = ModelTrainer()
     print(model_trainer.initiate_model_trainer(train_arr,test_arr))
