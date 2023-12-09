@@ -19,7 +19,7 @@ class DataTransformerConfig:
     preprocessor_obj_file_path = os.path.join('artifacts', "preprocessor.pkl")
 
 class DataTransformer:
-    def __init__(self):
+    def __init__(self) -> None:
         self.data_transformer_config = DataTransformerConfig()
 
     def get_data_transformer_object(self):
